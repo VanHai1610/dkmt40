@@ -12,17 +12,23 @@ Thu thập dữ liệu từ biến tần thông qua Modbus-RTU, dùng OPC-UA đ�
 ## Thông tin.
 
 - File gốc [MainWindow.xaml.cs][1]
-[1]: https://github.com/codeflac/dkmt40/blob/main/conveyorOpcUaServerWPF/MainWindow.xaml.cs "MainWindow.xaml.cs"
+[1]:
+https://github.com/codeflac/dkmt40/blob/main/conveyorOpcUaServerWPF/MainWindow.xaml.cs "MainWindow.xaml.cs"
 - Cấu trúc của OPC-UA server [ModelDesign.xml][1] 
-[1]: https://github.com/codeflac/dkmt40/blob/main/conveyorOpcUaServerWPF/ModelDesign.xml "ModelDesign.xml"
+[1]:
+https://github.com/codeflac/dkmt40/blob/main/conveyorOpcUaServerWPF/ModelDesign.xml "ModelDesign.xml"
 - Cấu trúc của server bằng C# [TripleH.Classes.cs][1]
-[1]: https://github.com/codeflac/dkmt40/blob/main/conveyorOpcUaServerWPF/TripleH.Classes.cs "1"
+[1]:
+https://github.com/codeflac/dkmt40/blob/main/conveyorOpcUaServerWPF/TripleH.Classes.cs "1"
 - Thông tin về server [Server.Config.xml][1]
-[1]: https://github.com/codeflac/dkmt40/blob/main/conveyorOpcUaServerWPF/Server.Config.xml "1"
+[1]:
+https://github.com/codeflac/dkmt40/blob/main/conveyorOpcUaServerWPF/Server.Config.xml "1"
 - Thông tin về các node của server [TripleH.NodeSet2.xml][1]
-[1]: https://github.com/codeflac/dkmt40/blob/main/conveyorOpcUaServerWPF/TripleH.NodeSet2.xml "1"
+[1]:
+https://github.com/codeflac/dkmt40/blob/main/conveyorOpcUaServerWPF/TripleH.NodeSet2.xml "1"
 - Chương trình tạo và quản lý node [TripleHNodeManager.cs][1]
-[1]: https://github.com/codeflac/dkmt40/blob/main/conveyorOpcUaServerWPF/TripleHNodeManager.cs "1"
+[1]:
+https://github.com/codeflac/dkmt40/blob/main/conveyorOpcUaServerWPF/TripleHNodeManager.cs "1"
 
 ## Phần mềm
 - Visual studio 2022
