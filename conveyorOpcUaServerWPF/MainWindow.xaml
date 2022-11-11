@@ -1,0 +1,22 @@
+﻿<Window x:Class="conveyorOpcUaServerWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:conveyorOpcUaServerWPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Background="#FF233D4D">
+    <Grid Background="#FF233D4D">
+        <TextBox x:Name="urlTextBox" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Go tuck yourself" VerticalAlignment="Top" Foreground="#FFFCCA46" Background="Transparent" TextAlignment="Center" IsReadOnly="True" Margin="88,49,0,0" BorderBrush="#FFFCCA46" FontSize="16" Padding="5,0,5,0"/>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" Height="20" VerticalAlignment="Top">
+                <MenuItem Header="_Connect">
+                    <MenuItem Header="Start server" Click="startBTN_Clicked"/>
+                    <MenuItem Header="Stop server" Click="stopBTN_Clicked"/>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <Button Content="Copy" HorizontalAlignment="Left" Margin="660,48,0,0" VerticalAlignment="Top" FontSize="16" Background="#FF233D4D" Foreground="#FFFCCA46" BorderBrush="#FFFCCA46" Padding="5,1,5,1" Height="28" Width="94" Click="Button_Click"/>
+        <Label Content="URL :" HorizontalAlignment="Left" Margin="29,43,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFA1C181" FontWeight="Bold"/>
+    </Grid>
+</Window>
