@@ -26,74 +26,51 @@ namespace conveyorOpcUaServerWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ApplicationInstance m_application =  new ApplicationInstance();
-        private StandardServer m_server;
-        private ApplicationConfiguration m_configuration;
+        #region Contructor
         public MainWindow()
         {
             InitializeComponent();
-            m_application.ApplicationType = ApplicationType.Server;
-            m_application.ConfigSectionName = "TriplHServer";
+
 
         }
-        private void startServer()
+        #endregion
+
+        #region Method
+
+        #endregion
+
+        #region Event handler
+
+        private async void startBTN_Clicked(object sender, RoutedEventArgs e)
         {
             try
             {
-                // process and command line arguments.
-                if (m_application.ProcessCommandLine())
+                bool result = await server.Start();
+                if (result)
                 {
-                    return;
+                    isConnected = true;
+                    tcpLB.Content = server.Server.GetEndpoints()[0].EndpointUrl;
+                    httpsLB.Content = "Server doesn't use HTTPS protocol.";
+                    statusLB.Content = "Walking";
                 }
-
-                // check if running as a service.
-                if (!Environment.UserInteractive)
+                else
                 {
-                    m_application.StartAsService(new TripleHServer());
-                    return;
+                    isConnected = false;
+                    MessageBox.Show("Cannot start OPCUA-Server by some reasons.");
                 }
-
-                // load the application configuration.
-                m_application.LoadApplicationConfiguration("F:/vault of code/vault of c#/ConveyorOpcUAServerWPF/ConveyorOpcUAServerWPF/Server.Config.xml", false).Wait();
-
-                // check the application certificate.
-                m_application.CheckApplicationInstanceCertificate(false, 0).Wait();
-
-                // start the server.
-                m_application.Start(new TripleHServer()).Wait();
-
-                // run the application interactively.
-                m_server = m_application.Server as StandardServer;
-                m_configuration = m_application.ApplicationConfiguration;
-            }
-            catch (Exception e)
-            {
-                string text = "Exception: " + e.Message;
-                if (e.InnerException != null)
-                {
-                    text += "\r\nInner exception: ";
-                    text += e.InnerException.Message;
-                }
-                MessageBox.Show(text, m_application.ApplicationName);
-            }
-        }
-        private void startBTN_Clicked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                startServer();
-                urlTextBox.Text = m_server.GetEndpoints()[0].EndpointUrl;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+
         private void stopBTN_Clicked(object sender, RoutedEventArgs e)
         {
             try
             {
-                m_application.Stop();
+                server.Stop();
+                statusLB.Content = "Not Walking";
             }
             catch (Exception ex)
             {
@@ -103,7 +80,20 @@ namespace conveyorOpcUaServerWPF
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetDataObject(urlTextBox.Text);
+            Clipboard.SetDataObject(server.Server.GetEndpoints()[0].EndpointUrl);
         }
+
+        #endregion
+
+        #region Public feild
+
+        public OPCUAServer server = new OPCUAServer("F:/vault of code/vault of c#/ConveyorOpcUAServerWPF/ConveyorOpcUAServerWPF/Server.Config.xml");
+        public bool isConnected = false;
+
+        #endregion
+
+        #region Private field
+
+        #endregion
     }
 }

@@ -151,12 +151,14 @@ IList<object> outputArguments)
 
             return ServiceResult.Good;
         }
+
+        #region Private field
         private ushort m_namespaceIndex;
         private TripleHServerConfiguration m_configuration;
         private static TripleHState m_conveyor1;
-        private static TripleHState m_conveyor2;
         private System.Threading.Timer m_simulationTimer;
         private List<TripleHState> m_tripleHStates;
+        #endregion
 
     }
 }

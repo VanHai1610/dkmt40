@@ -5,18 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:conveyorOpcUaServerWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Background="#FF233D4D">
+        Title="Triple-H OPC-UA Server" Height="450" Width="800" Background="#FF233D4D">
     <Grid Background="#FF233D4D">
-        <TextBox x:Name="urlTextBox" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Go tuck yourself" VerticalAlignment="Top" Foreground="#FFFCCA46" Background="Transparent" TextAlignment="Center" IsReadOnly="True" Margin="88,49,0,0" BorderBrush="#FFFCCA46" FontSize="16" Padding="5,0,5,0"/>
         <DockPanel>
-            <Menu DockPanel.Dock="Top" Height="20" VerticalAlignment="Top">
+            <Menu DockPanel.Dock="Top" Height="25" VerticalAlignment="Top" Background="#FFD9DDE0" Foreground="Black">
                 <MenuItem Header="_Connect">
                     <MenuItem Header="Start server" Click="startBTN_Clicked"/>
                     <MenuItem Header="Stop server" Click="stopBTN_Clicked"/>
                 </MenuItem>
             </Menu>
         </DockPanel>
-        <Button Content="Copy" HorizontalAlignment="Left" Margin="660,48,0,0" VerticalAlignment="Top" FontSize="16" Background="#FF233D4D" Foreground="#FFFCCA46" BorderBrush="#FFFCCA46" Padding="5,1,5,1" Height="28" Width="94" Click="Button_Click"/>
-        <Label Content="URL :" HorizontalAlignment="Left" Margin="29,43,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFA1C181" FontWeight="Bold"/>
+        <Button Content="Copy" HorizontalAlignment="Left" Margin="662,85,0,0" VerticalAlignment="Top" FontSize="16" Background="#FF233D4D" Foreground="#FFFCCA46" BorderBrush="#FFFCCA46" Padding="5,1,5,1" Height="28" Width="94" Click="Button_Click"/>
+        <Label Content="Server Address (UA TCP):" HorizontalAlignment="Left" Margin="29,160,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFA1C181" FontWeight="Bold"/>
+        <Label Content="Server status:" HorizontalAlignment="Left" Margin="29,82,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFA1C181" FontWeight="Bold"/>
+        <Label Content="Server Address (UA HTTPS):" HorizontalAlignment="Left" Margin="29,121,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFA1C181" FontWeight="Bold"/>
+        <Label x:Name="statusLB" Content="Go Tuck Yourself !" HorizontalAlignment="Left" Margin="298,82,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCCA46" FontWeight="Normal"/>
+        <Label x:Name="httpsLB" Content="Go Tuck Yourself !" HorizontalAlignment="Left" Margin="298,121,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCCA46" FontWeight="Normal"/>
+        <Label x:Name="tcpLB" Content="Go Tuck Yourself !" HorizontalAlignment="Left" Margin="298,160,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCCA46" FontWeight="Normal"/>
     </Grid>
 </Window>
