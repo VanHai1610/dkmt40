@@ -34,3 +34,6 @@ F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\obj\D
 F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\obj\Debug\net6.0-windows\ref\conveyorOpcUaServerWPF.dll
 F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\obj\Debug\net6.0-windows\Page1.g.cs
 F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\obj\Debug\net6.0-windows\Page1.baml
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\obj\Debug\net6.0-windows\conveyorOpcUaServerWPF.Properties.Resources.resources
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\obj\Debug\net6.0-windows\conveyorOpcUaServerWPF.Resource1.resources
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\obj\Debug\net6.0-windows\conveyorOpcUaServerWPF.csproj.GenerateResource.cache

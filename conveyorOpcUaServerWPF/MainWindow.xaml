@@ -5,26 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:conveyorOpcUaServerWPF"
         mc:Ignorable="d"
-        Title="Triple-H OPC-UA Server" Height="600" Width="1000" Background="#000000"
+        Title="Triple-H OPC-UA Server" Height="640" Width="1020" Background="#000000"
         FontFamily="Poppins" 
-        
-        
-                >
+        >
 
     <Window.Resources>
         <SolidColorBrush x:Key="darkBlue" Color="#012a4a"/>
         <SolidColorBrush x:Key="tabcontrolBack" Color="#013a63"/>
 
-        <SolidColorBrush x:Key="cyan" Color="#6B6AFF"/>
+        <SolidColorBrush x:Key="cyan" Color="#FF00EDFF"/>
         <SolidColorBrush x:Key="lightPink" Color="#fdc5f5"/>
         <SolidColorBrush x:Key="white" Color="#FFFFFF"/>
 
         <SolidColorBrush x:Key="orange" Color="#FE7F2D"/>
         <SolidColorBrush x:Key="yellow" Color="#FCCA46"/>
         <SolidColorBrush x:Key="lightMint" Color="#A1C181"/>
-        <SolidColorBrush x:Key="mint" Color="#619B8A"/>
+        <SolidColorBrush x:Key="mint" Color="#06d6a0"/>
         <SolidColorBrush x:Key="purple" Color="#6268DD"/>
-
+        
+        
+        <!-- tabitem style--> 
         <Style x:Key="tabItemStyle" TargetType="TabItem">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{DynamicResource white}" />
@@ -35,7 +35,7 @@
 
             <Setter Property="FontWeight" Value="Bold" />
 
-            <Setter Property="Margin" Value=" 0 0 0 0" />
+            <Setter Property="Margin" Value="0 0 0 0" />
             <Setter Property="Padding" Value="0 0 0 0" />
             <!--
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -64,13 +64,15 @@
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource cyan}"/>
+                            </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="BorderThickness" Value="5"/>
                                 <Setter Property="BorderBrush" Value="{DynamicResource purple}"/>
                             </Trigger>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="{DynamicResource cyan}"/>
-                            </Trigger>
+
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -80,19 +82,35 @@
 
         </Style>
 
+
+        <!--textBox style-->
         <Style x:Key="textboxItem" TargetType="TextBox">
             <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderThickness" Value="5"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource purple}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+            </Setter>
         </Style>
 
+
         <!--  tabcontrol style ! -->
-
-
         <Style x:Key="tabControlStyle" TargetType="TabControl">
             <Setter Property="Background" Value="{DynamicResource darkBlue}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Padding" Value="0"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Template">
@@ -141,35 +159,118 @@
         </Style>
 
 
+        <!-- Standard Button Template-->
+        <Style x:Key="StandardButton" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="5"
+                                >
+                            <Border.Background>
+                                <LinearGradientBrush EndPoint="0,1" StartPoint="2,0">
+                                    <GradientStop Color="#FF00EDFF" Offset="1"/>
+                                    <GradientStop Color="#FF0508CA" Offset="0"/>
+                                </LinearGradientBrush>
 
-        <!--  TabItem style ! -->
+                            </Border.Background>
+                            <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderThickness" Value="5"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource purple}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
 
     </Window.Resources>
 
     <Grid Background="{DynamicResource darkBlue}" >
         <DockPanel/>
-        <Button Content="Copy" HorizontalAlignment="Left" Margin="667,142,0,0" VerticalAlignment="Top" FontSize="16" Background="#FF233D4D" Foreground="#FFFCCA46" BorderBrush="#FFFCCA46" Padding="5,1,5,1" Height="28" Width="94" Click="Button_Click"/>
-        <Label x:Name="statusLB" Content="Go Tuck Yourself !" HorizontalAlignment="Left" Margin="298,123,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCCA46" FontWeight="Normal"/>
-        <Label x:Name="httpsLB" Content="Go Tuck Yourself !" HorizontalAlignment="Left" Margin="298,121,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCCA46" FontWeight="Normal"/>
-        <Label x:Name="tcpLB" Content="Go Tuck Yourself !" HorizontalAlignment="Left" Margin="298,160,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCCA46" FontWeight="Normal"/>
 
         <Border CornerRadius="0"
                 Padding="0"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
-                Background="{DynamicResource darkBlue}" Height="584" Width="1000"
+                Background="{DynamicResource darkBlue}" Height="600" Width="1000"
                 >
 
-            <TabControl Height="584" Width="1000" TabStripPlacement="Left" Style="{DynamicResource tabControlStyle}" VerticalAlignment="Center" Margin="10,10,10,10">
+            <TabControl Height="600" Width="1000" TabStripPlacement="Left" Style="{DynamicResource tabControlStyle}" VerticalAlignment="Center" Margin="10" Padding="10">
                 <TabItem Header="Home" Style="{DynamicResource tabItemStyle}">
                     <Grid>
-                        <TextBlock Text="Home"
-                                   Foreground="{DynamicResource lightMint}"
-                                   FontSize="20"
-                                   FontWeight="Bold"
+                        
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="200"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="50"/>
+                            </Grid.RowDefinitions>
+                        
+                        <Image Grid.Row="0" 
+                               Height="200">
+                            <Image.Source>
+                                <BitmapImage DecodePixelWidth="200" UriSource="F:/vault of code/vault of C#/conveyorOpcUaServerWPF/conveyorOpcUaServerWPF/images/logo.png" />
+                            </Image.Source>
+                        </Image>
+
+                        <DockPanel Grid.Row="1"
                                    VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"/>
+                                   Margin="10 0 0 0">
+                            
+                            <TextBlock
+                                Text="Status"
+                                Foreground="{DynamicResource white}"
+                                FontSize="20"
+                                VerticalAlignment="Center"/>
+                            
+                        </DockPanel>
+                        
+                        <DockPanel  Grid.Row="2"
+                                    VerticalAlignment="Center"
+                                    Margin="10 0 0 0"
+                                    >
+
+                            <TextBlock
+                                Text="TCP:"
+                                Foreground="{DynamicResource white}"
+                                FontSize="20"
+                                VerticalAlignment="Center"/>
+
+                            <TextBlock Name="tcpText"     
+                                       Text="Go tuck yourself"
+                                       Margin="10 0 0 0"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource yellow}"/>
+                            <Button Name="copyBTN"
+                                    Style="{DynamicResource StandardButton}" 
+                                    Content="ClipBoard"
+                                    Width="100"
+                                    HorizontalAlignment="Right" Click="copyBTN_Click"
+                                    />
+                        </DockPanel>
+
+                        <DockPanel Grid.Row="3"
+                                   VerticalAlignment="Center"
+                                   Margin="10 0 0 0"
+                                   >
+                             <TextBlock
+                                Text="HTTPS:"
+                                Foreground="{DynamicResource white}"
+                                FontSize="20"
+                                VerticalAlignment="Center"/>
+
+                            <TextBlock      
+                                       Text="This server not support this protocol."
+                                       Margin="10 0 0 0"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource yellow}"/>
+                        </DockPanel>
+
+                        
                     </Grid>
 
                 </TabItem>
@@ -192,7 +293,7 @@
                                    FontWeight="Bold"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"/>
-                        <RadioButton Content="RadioButton" Margin="246,116,409,399"/>
+
                     </Grid>
 
                 </TabItem>

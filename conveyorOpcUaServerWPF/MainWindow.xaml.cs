@@ -49,9 +49,6 @@ namespace conveyorOpcUaServerWPF
                 if (result)
                 {
                     isConnected = true;
-                    tcpLB.Content = server.Server.GetEndpoints()[0].EndpointUrl;
-                    httpsLB.Content = "Server doesn't use HTTPS protocol.";
-                    statusLB.Content = "Walking";
                 }
                 else
                 {
@@ -70,7 +67,6 @@ namespace conveyorOpcUaServerWPF
             try
             {
                 server.Stop();
-                statusLB.Content = "Not Walking";
             }
             catch (Exception ex)
             {
@@ -95,5 +91,10 @@ namespace conveyorOpcUaServerWPF
         #region Private field
 
         #endregion
+
+        private void copyBTN_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetDataObject(tcpText.Text);
+        }
     }
 }
