@@ -1,26 +1,204 @@
-﻿<Window x:Class="conveyorOpcUaServerWPF.MainWindow"
+﻿<Window x:Name="window" x:Class="conveyorOpcUaServerWPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:conveyorOpcUaServerWPF"
         mc:Ignorable="d"
-        Title="Triple-H OPC-UA Server" Height="450" Width="800" Background="#FF233D4D">
-    <Grid Background="#FF233D4D">
-        <DockPanel>
-            <Menu DockPanel.Dock="Top" Height="25" VerticalAlignment="Top" Background="#FFD9DDE0" Foreground="Black">
-                <MenuItem Header="_Connect">
-                    <MenuItem Header="Start server" Click="startBTN_Clicked"/>
-                    <MenuItem Header="Stop server" Click="stopBTN_Clicked"/>
-                </MenuItem>
-            </Menu>
-        </DockPanel>
-        <Button Content="Copy" HorizontalAlignment="Left" Margin="662,85,0,0" VerticalAlignment="Top" FontSize="16" Background="#FF233D4D" Foreground="#FFFCCA46" BorderBrush="#FFFCCA46" Padding="5,1,5,1" Height="28" Width="94" Click="Button_Click"/>
-        <Label Content="Server Address (UA TCP):" HorizontalAlignment="Left" Margin="29,160,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFA1C181" FontWeight="Bold"/>
-        <Label Content="Server status:" HorizontalAlignment="Left" Margin="29,82,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFA1C181" FontWeight="Bold"/>
-        <Label Content="Server Address (UA HTTPS):" HorizontalAlignment="Left" Margin="29,121,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFA1C181" FontWeight="Bold"/>
-        <Label x:Name="statusLB" Content="Go Tuck Yourself !" HorizontalAlignment="Left" Margin="298,82,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCCA46" FontWeight="Normal"/>
+        Title="Triple-H OPC-UA Server" Height="600" Width="1000" Background="#000000"
+        FontFamily="Poppins" 
+        
+        
+                >
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="darkBlue" Color="#012a4a"/>
+        <SolidColorBrush x:Key="tabcontrolBack" Color="#013a63"/>
+
+        <SolidColorBrush x:Key="cyan" Color="#6B6AFF"/>
+        <SolidColorBrush x:Key="lightPink" Color="#fdc5f5"/>
+        <SolidColorBrush x:Key="white" Color="#FFFFFF"/>
+
+        <SolidColorBrush x:Key="orange" Color="#FE7F2D"/>
+        <SolidColorBrush x:Key="yellow" Color="#FCCA46"/>
+        <SolidColorBrush x:Key="lightMint" Color="#A1C181"/>
+        <SolidColorBrush x:Key="mint" Color="#619B8A"/>
+        <SolidColorBrush x:Key="purple" Color="#6268DD"/>
+
+        <Style x:Key="tabItemStyle" TargetType="TabItem">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource white}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Height" Value="100" />
+            <Setter Property="Width" Value="70" />
+
+            <Setter Property="FontWeight" Value="Bold" />
+
+            <Setter Property="Margin" Value=" 0 0 0 0" />
+            <Setter Property="Padding" Value="0 0 0 0" />
+            <!--
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            -->
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Grid SnapsToDevicePixels="True">
+                            <Border CornerRadius="10"
+                                    Background="{TemplateBinding Background}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    Margin="{TemplateBinding Margin}">
+                                <ContentPresenter 
+                                                  
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  SnapsToDevicePixels="True"
+                                                  RecognizesAccessKey="True"
+                                                  Margin="{TemplateBinding Margin}"
+                                                  ContentSource="Header"
+                                                  Focusable="False"/>
+
+
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderThickness" Value="5"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource purple}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource cyan}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+
+
+        </Style>
+
+        <Style x:Key="textboxItem" TargetType="TextBox">
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <!--  tabcontrol style ! -->
+
+
+        <Style x:Key="tabControlStyle" TargetType="TabControl">
+            <Setter Property="Background" Value="{DynamicResource darkBlue}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid SnapsToDevicePixels="true">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+
+                            <TabPanel x:Name="HeaderPanel"
+                                Grid.Row="0"
+                                Panel.ZIndex="1"
+                                Margin="0,10,0,0"
+                                IsItemsHost="True"
+                                KeyboardNavigation.TabIndex="1"
+                                Background="Transparent" />
+                            <Border Grid.Column="1"
+                                    CornerRadius="10"
+                                    Background="{DynamicResource tabcontrolBack}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    Margin="{TemplateBinding Margin}">
+                                <ContentPresenter ContentSource="SelectedContent"
+                                                  SnapsToDevicePixels="True"
+                                                  Margin="{TemplateBinding Margin}"/>
+
+                            </Border>
+                            <!--<ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  SnapsToDevicePixels="True"
+                                                  RecognizesAccessKey="True"
+                                                  Margin="{TemplateBinding Margin}"
+                                                  ContentSource="Header"
+                                                  Focusable="False"/>-->
+
+
+
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+        <!--  TabItem style ! -->
+
+
+    </Window.Resources>
+
+    <Grid Background="{DynamicResource darkBlue}" >
+        <DockPanel/>
+        <Button Content="Copy" HorizontalAlignment="Left" Margin="667,142,0,0" VerticalAlignment="Top" FontSize="16" Background="#FF233D4D" Foreground="#FFFCCA46" BorderBrush="#FFFCCA46" Padding="5,1,5,1" Height="28" Width="94" Click="Button_Click"/>
+        <Label x:Name="statusLB" Content="Go Tuck Yourself !" HorizontalAlignment="Left" Margin="298,123,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCCA46" FontWeight="Normal"/>
         <Label x:Name="httpsLB" Content="Go Tuck Yourself !" HorizontalAlignment="Left" Margin="298,121,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCCA46" FontWeight="Normal"/>
         <Label x:Name="tcpLB" Content="Go Tuck Yourself !" HorizontalAlignment="Left" Margin="298,160,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#FFFCCA46" FontWeight="Normal"/>
+
+        <Border CornerRadius="0"
+                Padding="0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Background="{DynamicResource darkBlue}" Height="584" Width="1000"
+                >
+
+            <TabControl Height="584" Width="1000" TabStripPlacement="Left" Style="{DynamicResource tabControlStyle}" VerticalAlignment="Center" Margin="10,10,10,10">
+                <TabItem Header="Home" Style="{DynamicResource tabItemStyle}">
+                    <Grid>
+                        <TextBlock Text="Home"
+                                   Foreground="{DynamicResource lightMint}"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"/>
+                    </Grid>
+
+                </TabItem>
+                <TabItem Header="Config" Style="{DynamicResource tabItemStyle}">
+                    <Grid>
+                        <TextBlock Text="Config"
+                                   Foreground="{DynamicResource lightMint}"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"/>
+                    </Grid>
+
+                </TabItem>
+                <TabItem Header="Monitor" Style="{DynamicResource tabItemStyle}">
+                    <Grid>
+                        <TextBlock Text="Go tuck yourself"
+                                   Foreground="{DynamicResource lightMint}"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"/>
+                        <RadioButton Content="RadioButton" Margin="246,116,409,399"/>
+                    </Grid>
+
+                </TabItem>
+
+
+            </TabControl>
+        </Border>
     </Grid>
 </Window>
