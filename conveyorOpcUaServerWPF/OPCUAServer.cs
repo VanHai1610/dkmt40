@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using ConveyorOpcUAServer;
 using Opc.Ua;
 using Opc.Ua.Configuration;
@@ -25,7 +26,7 @@ namespace conveyorOpcUaServerWPF
 
         #region Server connection
 
-        public async Task<bool> Start()
+        public bool Start()
         {
             try
             {
@@ -59,7 +60,7 @@ namespace conveyorOpcUaServerWPF
                     text += "\r\nInner exception: ";
                     text += e.InnerException.Message;
                 }
-                //MessageBox.Show(text, m_application.ApplicationName);
+                MessageBox.Show(text, m_application.ApplicationName);
 
                 return false;
             }

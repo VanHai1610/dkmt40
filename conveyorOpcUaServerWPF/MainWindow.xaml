@@ -15,6 +15,7 @@
 
         <SolidColorBrush x:Key="cyan" Color="#FF00EDFF"/>
         <SolidColorBrush x:Key="lightPink" Color="#fdc5f5"/>
+        <SolidColorBrush x:Key="pink" Color="#f038ff"/>
         <SolidColorBrush x:Key="white" Color="#FFFFFF"/>
 
         <SolidColorBrush x:Key="orange" Color="#FE7F2D"/>
@@ -22,9 +23,9 @@
         <SolidColorBrush x:Key="lightMint" Color="#A1C181"/>
         <SolidColorBrush x:Key="mint" Color="#06d6a0"/>
         <SolidColorBrush x:Key="purple" Color="#6268DD"/>
-        
-        
-        <!-- tabitem style--> 
+
+
+        <!-- tabitem style-->
         <Style x:Key="tabItemStyle" TargetType="TabItem">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{DynamicResource white}" />
@@ -161,9 +162,11 @@
 
         <!-- Standard Button Template-->
         <Style x:Key="StandardButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
+
                         <Border CornerRadius="5"
                                 >
                             <Border.Background>
@@ -173,12 +176,17 @@
                                 </LinearGradientBrush>
 
                             </Border.Background>
-                            <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                            <ContentPresenter Margin="2" HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" 
+                                              RecognizesAccessKey="True"
+                                              />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="BorderThickness" Value="5"/>
-                                <Setter Property="BorderBrush" Value="{DynamicResource purple}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource lightPink}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource pink}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -186,6 +194,122 @@
             </Setter>
         </Style>
 
+
+        <Style x:Key="ComboboxTextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Foreground" Value="{DynamicResource darkBlue}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <Border CornerRadius="5,0,0,5"  
+                BorderThickness="1,1,0,1"  
+                                        Background="white"
+                BorderBrush="Transparent">
+                                <ScrollViewer x:Name="PART_ContentHost"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="ComboboxButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border   
+             Background="White"   
+             x:Name="border"   
+             CornerRadius="0,5,5,0"   
+             BorderThickness="0,1,1,1"  
+             BorderBrush="Transparent">
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ComboboxStyle" TargetType="ComboBox">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            
+            
+            <Setter Property="Background" Value="{DynamicResource tabcontrolBack}"/>
+            <Setter Property="Foreground" Value="{DynamicResource darkBlue}"/>
+            
+            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition MaxWidth="18"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Name="PART_EditableTextBox"  
+                                     Background="{DynamicResource tabcontrolBack}"
+                Style="{StaticResource ComboboxTextBoxStyle}"  
+                Padding="5,0,0,0"  
+                Height="{TemplateBinding Height}"/>
+                            <ToggleButton Grid.Column="1" Margin="0"  
+               Height="{TemplateBinding Height}"  
+               Style="{DynamicResource ComboboxButtonStyle}"  
+               Focusable="False"  
+               IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"  
+               ClickMode="Press">
+                                <Path Grid.Column="1"  
+                  HorizontalAlignment="Center"  
+                  VerticalAlignment="Center"  
+                  Data="M 0 0 L 4 4 L 8 0 Z"  
+                  Fill="DodgerBlue" />
+                            </ToggleButton>
+                            <ContentPresenter Name="ContentSite"  
+               Content="{TemplateBinding SelectionBoxItem}"  
+               ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"  
+               ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"  
+                
+               VerticalAlignment="Center"  
+               HorizontalAlignment="Left"  
+               Margin="5,0,0,0"/>
+                            <Popup Name="Popup"  
+               Placement="Bottom"  
+               IsOpen="{TemplateBinding IsDropDownOpen}"  
+               AllowsTransparency="True"   
+               Focusable="False"  
+               PopupAnimation="Slide">
+                                <Grid Name="DropDown"  
+                                      Background="{DynamicResource tabcontrolBack}"
+                 SnapsToDevicePixels="True"          
+                 MinWidth="{TemplateBinding ActualWidth}"  
+                 MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border   
+                   x:Name="DropDownBorder"  
+                   BorderThickness="2"  
+                   CornerRadius="5"  
+                                        
+                   BorderBrush="White"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            
+                            <Trigger Property="IsDropDownOpen" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource white}"/>
+                            </Trigger>
+                            
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                    
+                </Setter.Value>
+            </Setter>
+        </Style>
 
     </Window.Resources>
 
@@ -200,35 +324,33 @@
                 >
 
             <TabControl Height="600" Width="1000" TabStripPlacement="Left" Style="{DynamicResource tabControlStyle}" VerticalAlignment="Center" Margin="10" Padding="10">
+
+                <!--
+                    Home page
+                -->
                 <TabItem Header="Home" Style="{DynamicResource tabItemStyle}">
-                    <Grid>
-                        
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="200"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="50"/>
-                            </Grid.RowDefinitions>
-                        
-                        <Image Grid.Row="0" 
-                               Height="200">
-                            <Image.Source>
-                                <BitmapImage DecodePixelWidth="200" UriSource="F:/vault of code/vault of C#/conveyorOpcUaServerWPF/conveyorOpcUaServerWPF/images/logo.png" />
-                            </Image.Source>
-                        </Image>
+                    <Grid >
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="200"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
                         <DockPanel Grid.Row="1"
                                    VerticalAlignment="Center"
                                    Margin="10 0 0 0">
-                            
+
                             <TextBlock
                                 Text="Status"
                                 Foreground="{DynamicResource white}"
                                 FontSize="20"
                                 VerticalAlignment="Center"/>
-                            
+
                         </DockPanel>
-                        
+
                         <DockPanel  Grid.Row="2"
                                     VerticalAlignment="Center"
                                     Margin="10 0 0 0"
@@ -257,7 +379,7 @@
                                    VerticalAlignment="Center"
                                    Margin="10 0 0 0"
                                    >
-                             <TextBlock
+                            <TextBlock
                                 Text="HTTPS:"
                                 Foreground="{DynamicResource white}"
                                 FontSize="20"
@@ -270,18 +392,195 @@
                                        Foreground="{DynamicResource yellow}"/>
                         </DockPanel>
 
-                        
-                    </Grid>
+                        <Viewbox Grid.Row="0">
+                            <Image Name="logo"
+                                   Width="200"
+                                   VerticalAlignment="Center"
+                                   Source="assests/logo1.png"/>
 
+
+                        </Viewbox>
+
+                        <DockPanel Grid.Row="4" 
+                                   VerticalAlignment="Bottom">
+                            <Button Name="startServerBTN"
+                                    Style="{DynamicResource StandardButton}"
+                                    Content="Start Server"
+                                    FontSize="20"
+                                    Width="300" Click="startServerBTN_Click">
+
+                            </Button>
+                        </DockPanel>
+
+
+                    </Grid>
                 </TabItem>
+                
+
                 <TabItem Header="Config" Style="{DynamicResource tabItemStyle}">
                     <Grid>
-                        <TextBlock Text="Config"
-                                   Foreground="{DynamicResource lightMint}"
-                                   FontSize="20"
-                                   FontWeight="Bold"
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="200"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock 
                                    VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"/>
+                                   HorizontalAlignment="Center"
+                                   Text="Configuration"
+                                   FontSize="50">
+                            <TextBlock.Foreground>
+                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                    <GradientStop Color="#FF00EDFF" Offset="0"/>
+                                    <GradientStop Color="#FF2F31C3" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+
+
+                        <DockPanel Grid.Row="1"
+                                   VerticalAlignment="Center"
+                                   Margin="10 0 0 0">
+
+                            <TextBlock
+                                Text="COM: "
+                                Foreground="{DynamicResource white}"
+                                FontSize="20"
+                                VerticalAlignment="Center"/>
+                            
+                            <ComboBox Name="portComboBox"
+                                      Style="{DynamicResource ComboboxStyle}"
+                                      HorizontalAlignment="Right"
+                                      Width="200" 
+                                      DropDownOpened="portComboBox_DropDownOpened"
+                                      Background="Transparent"
+                                      >
+                            </ComboBox>
+
+                        </DockPanel>
+
+                        <DockPanel  Grid.Row="2"
+                                    VerticalAlignment="Center"
+                                    Margin="10 0 0 0"
+                                    >
+
+                            <TextBlock
+                                Text="Baud:"
+                                Foreground="{DynamicResource white}"
+                                FontSize="20"
+                                VerticalAlignment="Center"/>
+
+                            <ComboBox Name="baudComboBox"
+                                      Style="{DynamicResource ComboboxStyle}"
+                                      HorizontalAlignment="Right"
+                                      Width="200"                                       
+                                      Background="Transparent"
+                                      >
+                                <ComboBoxItem Content="300"/>
+                                <ComboBoxItem Content="600"/>
+                                <ComboBoxItem Content="1200"/>
+                                <ComboBoxItem Content="2400"/>
+                                <ComboBoxItem Content="4800"/>
+                                <ComboBoxItem Content="9600"/>
+                                <ComboBoxItem Content="14400"/>
+                                <ComboBoxItem Content="19200"/>
+                                <ComboBoxItem Content="38400"/>
+                                <ComboBoxItem Content="57600"/>
+                                <ComboBoxItem Content="57600"/>
+                                <ComboBoxItem Content="115200"/>
+                                <ComboBoxItem Content="230400"/>
+                                <ComboBoxItem Content="460800"/>
+                            </ComboBox>
+
+                        </DockPanel>
+
+                        <DockPanel Grid.Row="3"
+                                   VerticalAlignment="Center"
+                                   Margin="10 0 0 0"
+                                   >
+                            <TextBlock
+                                Text="Parity:"
+                                Foreground="{DynamicResource white}"
+                                FontSize="20"
+                                VerticalAlignment="Center"/>
+
+                            <ComboBox Name="parityComboBox"
+                                      Style="{DynamicResource ComboboxStyle}"
+                                      HorizontalAlignment="Right"
+                                      Width="200" 
+                                      Background="Transparent"
+                                      >
+                                <ComboBoxItem Content="None"/>
+                                <ComboBoxItem Content="Even"/>
+                                <ComboBoxItem Content="Odd"/>
+                            </ComboBox>
+
+                        </DockPanel>
+
+                        <DockPanel Grid.Row="4"
+                                   VerticalAlignment="Center"
+                                   Margin="10 0 0 0"
+                                   >
+                            <TextBlock
+                                Text="Data bits:"
+                                Foreground="{DynamicResource white}"
+                                FontSize="20"
+                                VerticalAlignment="Center"/>
+
+                            <ComboBox Name="bitsComboBox"
+                                      Style="{DynamicResource ComboboxStyle}"
+                                      HorizontalAlignment="Right"
+                                      Width="200"
+                                      Background="Transparent"
+                                      >
+                                <ComboBoxItem Content="8"/>
+                                <ComboBoxItem Content="7"/>
+                            </ComboBox>
+
+                        </DockPanel>
+
+                        <DockPanel Grid.Row="5"
+                                   VerticalAlignment="Center"
+                                   Margin="10 0 0 0"
+                                   >
+                            <TextBlock
+                                Text="Stop bits:"
+                                Foreground="{DynamicResource white}"
+                                FontSize="20"
+                                VerticalAlignment="Center"/>
+
+                            <ComboBox Name="bitStopComboBox"
+                                      Style="{DynamicResource ComboboxStyle}"
+                                      HorizontalAlignment="Right"
+                                      Width="200" 
+                                      Background="Transparent"
+                                      >
+                                <ComboBoxItem Content="0"/>
+                                <ComboBoxItem Content="1"/>
+                                <ComboBoxItem Content="2"/>
+                            </ComboBox>
+
+
+                        </DockPanel>
+
+                        <DockPanel Grid.Row="6">
+                            <Button Name="openBTN"
+                                    Style="{DynamicResource StandardButton}"
+                                    Content="Open Port"
+                                    FontSize="20"
+                                    Width="150"
+                                    Height="50" Click="openBTN_Click"
+                                    />
+                        </DockPanel>
+
+
+
+
                     </Grid>
 
                 </TabItem>

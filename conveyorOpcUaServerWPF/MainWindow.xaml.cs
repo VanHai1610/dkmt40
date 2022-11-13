@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Opc.Ua;
 using Opc.Ua.Configuration;
 using Opc.Ua.Server;
+using System.IO.Ports;
 
 using ConveyorOpcUAServer;
 
@@ -41,60 +42,116 @@ namespace conveyorOpcUaServerWPF
 
         #region Event handler
 
-        private async void startBTN_Clicked(object sender, RoutedEventArgs e)
+        private async void startServerBTN_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (!isConnected)
             {
-                bool result = await server.Start();
-                if (result)
+                try
                 {
-                    isConnected = true;
+                    bool result = await Task.Run(() => server.Start());
+                    if (result)
+                    {
+                        isConnected = true;
+                        startServerBTN.Content = "Stop Server";
+                        tcpText.Text = server.Server.GetEndpoints()[0].EndpointUrl;
+                    }
+                    else
+                    {
+                        isConnected = false;
+                        //MessageBox.Show("Cannot start OPCUA-Server by some reasons.");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            else
+            {
+                try
+                {
+                    server.Stop();
                     isConnected = false;
-                    MessageBox.Show("Cannot start OPCUA-Server by some reasons.");
+                    startServerBTN.Content = "Start Server";
+                    tcpText.Text = "Server is downed";
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
-
-        private void stopBTN_Clicked(object sender, RoutedEventArgs e)
+        private void copyBTN_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                server.Stop();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            Clipboard.SetDataObject(tcpText.Text);
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Clipboard.SetDataObject(server.Server.GetEndpoints()[0].EndpointUrl);
-        }
-
+        
         #endregion
 
         #region Public feild
 
-        public OPCUAServer server = new OPCUAServer("F:/vault of code/vault of c#/ConveyorOpcUAServerWPF/ConveyorOpcUAServerWPF/Server.Config.xml");
+        public OPCUAServer server = new OPCUAServer("Server.Config.xml");
         public bool isConnected = false;
+
+        public SerialPort port {
+            get { return m_port; }
+            set {; }
+        }
+
 
         #endregion
 
         #region Private field
+        private SerialPort m_port = new SerialPort();
 
         #endregion
 
-        private void copyBTN_Click(object sender, RoutedEventArgs e)
+        private void portComboBox_DropDownOpened(object sender, EventArgs e)
         {
-            Clipboard.SetDataObject(tcpText.Text);
+            portComboBox.Items.Clear();
+
+            foreach (string comPort in SerialPort.GetPortNames())
+            {
+                portComboBox.Items.Add(comPort);
+            }
+        }
+
+        private void openBTN_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!m_port.IsOpen)
+                {
+                    m_port.PortName = portComboBox.Text;
+
+                    m_port.BaudRate = Convert.ToInt32( baudComboBox.Text);
+
+                    m_port.Parity = (parityComboBox.SelectedIndex == 0) ? Parity.None :
+                                    (parityComboBox.SelectedIndex == 1) ? Parity.Even :
+                                    (parityComboBox.SelectedIndex == 2) ? Parity.Odd : 
+                                    Parity.None;
+
+                    m_port.DataBits = Convert.ToInt16( bitsComboBox.Text);
+
+                    m_port.StopBits = (bitStopComboBox.SelectedIndex == 0) ? StopBits.None :
+                                      (bitStopComboBox.SelectedIndex == 1) ? StopBits.One :
+                                      (bitStopComboBox.SelectedIndex == 2) ? StopBits.Two :
+                                      StopBits.One;
+                    m_port.Open();
+                    openBTN.Content = "Close Port";
+                }
+                else
+                {
+                    m_port.Close();
+                    openBTN.Content = "Open Port";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

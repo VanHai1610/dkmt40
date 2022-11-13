@@ -37,3 +37,14 @@ F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\obj\D
 F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\obj\Debug\net6.0-windows\conveyorOpcUaServerWPF.Properties.Resources.resources
 F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\obj\Debug\net6.0-windows\conveyorOpcUaServerWPF.Resource1.resources
 F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\obj\Debug\net6.0-windows\conveyorOpcUaServerWPF.csproj.GenerateResource.cache
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\obj\Debug\net6.0-windows\App.baml
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\bin\Debug\net6.0-windows\Server.Config.xml
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\bin\Debug\net6.0-windows\TripleH.PredefinedNodes.uanodes
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\bin\Debug\net6.0-windows\System.IO.Ports.dll
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\bin\Debug\net6.0-windows\runtimes\linux-arm\native\libSystem.IO.Ports.Native.so
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\bin\Debug\net6.0-windows\runtimes\linux-arm64\native\libSystem.IO.Ports.Native.so
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\bin\Debug\net6.0-windows\runtimes\linux-x64\native\libSystem.IO.Ports.Native.so
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\bin\Debug\net6.0-windows\runtimes\osx-arm64\native\libSystem.IO.Ports.Native.dylib
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\bin\Debug\net6.0-windows\runtimes\osx-x64\native\libSystem.IO.Ports.Native.dylib
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\bin\Debug\net6.0-windows\runtimes\unix\lib\net6.0\System.IO.Ports.dll
+F:\vault of code\vault of c#\conveyorOpcUaServerWPF\conveyorOpcUaServerWPF\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.IO.Ports.dll

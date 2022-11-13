@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:conveyorOpcUaServerWPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <BitmapImage x:Key="tripleH" UriSource="/assests/logo1.png"/>
+        </ResourceDictionary> 
     </Application.Resources>
 </Application>

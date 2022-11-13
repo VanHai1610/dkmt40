@@ -42,7 +42,7 @@ namespace ConveyorOpcUAServer
         {
             NodeStateCollection predefinedNodes = new NodeStateCollection();
             predefinedNodes.LoadFromBinaryResource(context,
-                "F:/vault of code/vault of c#/ConveyorOpcUAServerWPF/ConveyorOpcUAServerWPF/TripleH.PredefinedNodes.uanodes",
+                "TripleH.PredefinedNodes.uanodes",
                 typeof(TripleHNodeManager).GetTypeInfo().Assembly,
                 true);
 
