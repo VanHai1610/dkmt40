@@ -17,6 +17,7 @@
         <SolidColorBrush x:Key="lightPink" Color="#fdc5f5"/>
         <SolidColorBrush x:Key="pink" Color="#f038ff"/>
         <SolidColorBrush x:Key="white" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="darkViolet" Color="#240046"/>
 
         <SolidColorBrush x:Key="orange" Color="#FE7F2D"/>
         <SolidColorBrush x:Key="yellow" Color="#FCCA46"/>
@@ -234,12 +235,12 @@
         <Style x:Key="ComboboxStyle" TargetType="ComboBox">
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            
-            
+
+
             <Setter Property="Background" Value="{DynamicResource tabcontrolBack}"/>
             <Setter Property="Foreground" Value="{DynamicResource darkBlue}"/>
-            
-            
+
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
@@ -298,15 +299,158 @@
                         </Grid>
 
                         <ControlTemplate.Triggers>
-                            
+
                             <Trigger Property="IsDropDownOpen" Value="True">
                                 <Setter Property="Foreground" Value="{DynamicResource white}"/>
                             </Trigger>
-                            
+
                         </ControlTemplate.Triggers>
 
                     </ControlTemplate>
-                    
+
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border SnapsToDevicePixels="True" Background="{DynamicResource darkViolet}"  BorderThickness="0" BorderBrush="Transparent" Height="10" CornerRadius="3"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border  BorderThickness="0" BorderBrush="Transparent" Height="10">
+
+                            <Border.Background>
+                                <LinearGradientBrush EndPoint="0,1" StartPoint="2,0">
+                                    <GradientStop Color="#FF00EDFF" Offset="1"/>
+                                    <GradientStop Color="#FF0508CA" Offset="0"/>
+                                </LinearGradientBrush>
+
+                            </Border.Background>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderThumb" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Ellipse Height="14" Width="14" Fill="{DynamicResource cyan}"></Ellipse>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="Slider"  TargetType="Slider">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Track Grid.Row="1" x:Name="PART_Track"   >
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource SliderThumb}"  />
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton}" Command="Slider.IncreaseLarge" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+
+        <Style x:Key="Horizontal_Slider" TargetType="Slider">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="MinHeight" Value="21" />
+                    <Setter Property="MinWidth" Value="104" />
+                    <Setter Property="Template" Value="{StaticResource Slider}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="simpleRoundedTextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+            <Setter Property="FocusVisualStyle"   Value="{x:Null}" />
+            <Setter Property="MinWidth" Value="100" />
+            <Setter Property="MinHeight" Value="25" />
+            <Setter Property="AllowDrop"  Value="true" />
+            <Setter Property="BorderBrush" Value="{DynamicResource white}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="FontFamily" Value="Helvetica" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{DynamicResource white}" />
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                        <Border Name="Border"
+                CornerRadius="7"
+                Padding="2"
+                BorderThickness="2"
+                Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}">
+                            <ScrollViewer Margin="0"
+                        x:Name="PART_ContentHost" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <!-- Mouse Over -->
+                                    <Condition Property="IsEnabled" Value="True" />
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="BorderBrush" Value="{DynamicResource white}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource white}" />
+                            </MultiTrigger>
+
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <!-- Desactivé-->
+                                    <Condition Property="IsEnabled" Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="BorderBrush" Value="{DynamicResource white}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource white}"/>
+                            </MultiTrigger>
+
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <!-- Focus-->
+                                    <Condition Property="IsEnabled" Value="True" />
+                                    <Condition Property="IsFocused" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="BorderBrush" Value="{DynamicResource white}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource white}" />
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -415,7 +559,7 @@
 
                     </Grid>
                 </TabItem>
-                
+
 
                 <TabItem Header="Config" Style="{DynamicResource tabItemStyle}">
                     <Grid>
@@ -437,7 +581,7 @@
                             <TextBlock.Foreground>
                                 <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                                     <GradientStop Color="#FF00EDFF" Offset="0"/>
-                                    <GradientStop Color="#FF2F31C3" Offset="1"/>
+                                    <GradientStop Color="#FF0163FF" Offset="1"/>
                                 </LinearGradientBrush>
                             </TextBlock.Foreground>
                         </TextBlock>
@@ -452,7 +596,7 @@
                                 Foreground="{DynamicResource white}"
                                 FontSize="20"
                                 VerticalAlignment="Center"/>
-                            
+
                             <ComboBox Name="portComboBox"
                                       Style="{DynamicResource ComboboxStyle}"
                                       HorizontalAlignment="Right"
@@ -584,20 +728,111 @@
                     </Grid>
 
                 </TabItem>
+
+
                 <TabItem Header="Monitor" Style="{DynamicResource tabItemStyle}">
+                    
                     <Grid>
-                        <TextBlock Text="Go tuck yourself"
-                                   Foreground="{DynamicResource lightMint}"
-                                   FontSize="20"
-                                   FontWeight="Bold"
+                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="200"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
                                    VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"/>
+                                   HorizontalAlignment="Center"
+                                   Text="Motor Control"
+                                   FontSize="50">
+                            <TextBlock.Foreground>
+                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                    <GradientStop Color="#FF00EDFF" Offset="0"/>
+                                    <GradientStop Color="#FF0075FF" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+
+
+                        <TextBlock Grid.RowSpan="2"
+                                       Grid.Row="1"
+                                       Grid.Column="0"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       Text="Speed:"
+                                       FontSize="30"
+                                Padding=" 0 0 10 0">
+                            <TextBlock.Foreground>
+                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                    <GradientStop Color="#FF00EDFF" Offset="0"/>
+                                    <GradientStop Color="#FF0062FF" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+
+                        <Slider Grid.Column="1"
+                                    Grid.Row="1"
+                                    Width="680"
+                                    Style="{DynamicResource Horizontal_Slider}" 
+                                    TickPlacement="TopLeft" 
+                                    AutoToolTipPlacement="BottomRight" 
+                                    Maximum="100"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Left"
+                                    Margin="10 0 20 0">
+
+                        </Slider>
+
+                        <DockPanel Grid.Row="2"
+                                   Grid.Column="2"
+                                   Margin=" 0 0 20 0">
+                            
+                            <DockPanel HorizontalAlignment="Right">
+                                
+                                <TextBlock Text="Min:"
+                                           FontSize="25"
+                                           VerticalAlignment="Center"
+                                           Padding="10 0 5 0"/>
+
+                                <TextBox Style="{DynamicResource simpleRoundedTextBox}"
+                                         Width="100"
+                                         Height="40"
+                                         VerticalAlignment="Center"
+                                         Padding="0 0 0 0">
+
+
+                                </TextBox>
+
+                            </DockPanel>
+
+                            <DockPanel HorizontalAlignment="Right">
+                                
+                                <TextBlock
+                                           Text="Max:"
+                                           FontSize="25"
+                                           VerticalAlignment="Center"
+                                         Padding=" 0 0 10 0"
+                                           />
+                                <TextBox Style="{DynamicResource simpleRoundedTextBox}"
+                                         Width="100" 
+                                        Height="40"
+                                         />
+
+                            </DockPanel>
+
+                        </DockPanel>
 
                     </Grid>
-
+                    
                 </TabItem>
-
-
+                
             </TabControl>
         </Border>
     </Grid>

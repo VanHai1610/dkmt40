@@ -44,6 +44,10 @@
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "dependencies": {
+            "NModbus4": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
             "OPCFoundation.NetStandard.Opc.Ua": {
               "target": "Package",
               "version": "[1.4.370.12, )"
