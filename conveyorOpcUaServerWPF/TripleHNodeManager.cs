@@ -6,10 +6,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using TripleH;
 
 namespace ConveyorOpcUAServer
 {
-    class TripleHNodeManager : CustomNodeManager2
+    public class TripleHNodeManager : CustomNodeManager2
     {
         public TripleHNodeManager(IServerInternal server, ApplicationConfiguration configuration)
         :
@@ -19,8 +20,8 @@ namespace ConveyorOpcUAServer
 
             // set one namespace for the type model and one names for dynamically created nodes.
             string[] namespaceUrls = new string[2];
-            namespaceUrls[0] = Namespaces.TripleH;
-            namespaceUrls[1] = Namespaces.TripleH + "/Instance";
+            namespaceUrls[0] = TripleH.Namespaces.TripleH;
+            namespaceUrls[1] = TripleH.Namespaces.TripleH + "/Instance";
 
             m_namespaceIndex = Server.NamespaceUris.GetIndexOrAppend(namespaceUrls[1]);
 
@@ -56,7 +57,7 @@ namespace ConveyorOpcUAServer
                 LoadPredefinedNodes(SystemContext, externalReferences);
 
                 // find the untyped Batch Plant 1 node that was created when the model was loaded.
-                BaseObjectState passiveNode = (BaseObjectState)FindPredefinedNode(new NodeId(Objects.TripleH1, NamespaceIndexes[0]), typeof(BaseObjectState));
+                BaseObjectState passiveNode = (BaseObjectState)FindPredefinedNode(new NodeId(TripleH.Objects.TripleH1, NamespaceIndexes[0]), typeof(BaseObjectState));
 
                 // convert the untyped node to a typed node that can be manipulated within the server.
                 m_conveyor1 = new TripleHState(null);
@@ -86,7 +87,7 @@ namespace ConveyorOpcUAServer
                 true);
 
             NodeState folder = (NodeState)FindPredefinedNode(
-                ExpandedNodeId.ToNodeId(ObjectIds.TripleH1, Server.NamespaceUris),
+                ExpandedNodeId.ToNodeId(TripleH.ObjectIds.TripleH1, Server.NamespaceUris),
                 typeof(NodeState));
 
             folder.AddReference(Opc.Ua.ReferenceTypeIds.Organizes, false, machine.NodeId);
@@ -134,8 +135,8 @@ namespace ConveyorOpcUAServer
 
         public void DoSimulation(object state)
         {
-            m_conveyor1.Conveyor.Motor1.Speed.Value = 85;
-            m_conveyor1.Conveyor.Motor2.Speed.Value = 84;
+            m_conveyor1.Conveyor.Motor1.setSpeed.Value = 100;
+            m_conveyor1.Conveyor.Motor1.setSpeed.Value = 200;
         }
 
         private ServiceResult OnStartProcess(ISystemContext context, MethodState method, IList<object> inputArguments,
@@ -152,10 +153,11 @@ IList<object> outputArguments)
             return ServiceResult.Good;
         }
 
+        public TripleHState m_conveyor1;
+
         #region Private field
         private ushort m_namespaceIndex;
         private TripleHServerConfiguration m_configuration;
-        private static TripleHState m_conveyor1;
         private System.Threading.Timer m_simulationTimer;
         private List<TripleHState> m_tripleHStates;
         #endregion

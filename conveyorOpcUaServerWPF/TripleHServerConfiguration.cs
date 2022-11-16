@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TripleH;
 
 using System.Runtime.Serialization;
 using Opc.Ua;
 
 namespace ConveyorOpcUAServer
 {
-    [DataContract(Namespace = Namespaces.TripleH)]
+    [DataContract(Namespace = TripleH.Namespaces.TripleH)]
     public class TripleHServerConfiguration
     {
         public TripleHServerConfiguration()

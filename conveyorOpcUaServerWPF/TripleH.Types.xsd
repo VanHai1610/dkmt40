@@ -7,7 +7,7 @@
 >
   <xs:annotation>
     <xs:appinfo>
-      <tns:Model ModelUri="http://opcfoundation.org/TripleH" Version="1.0.0" PublicationDate="2022-11-10T08:08:37.0223504Z" />
+      <tns:Model ModelUri="http://opcfoundation.org/TripleH" Version="1.0.0" PublicationDate="2022-11-16T07:29:48.5447134Z" />
     </xs:appinfo>
   </xs:annotation>
   

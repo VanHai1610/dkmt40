@@ -16,8 +16,9 @@ using Opc.Ua;
 using Opc.Ua.Configuration;
 using Opc.Ua.Server;
 using System.IO.Ports;
-
+using modbusMotor;
 using ConveyorOpcUAServer;
+using TripleH;
 
 
 namespace conveyorOpcUaServerWPF
@@ -34,9 +35,15 @@ namespace conveyorOpcUaServerWPF
 
 
         }
+
         #endregion
 
         #region Method
+        private void monitor(ushort[] data)
+        {
+            //m_conveyor.Conveyor.Motor1.Torque.Value = 122;
+            
+        }
 
         #endregion
 
@@ -58,7 +65,6 @@ namespace conveyorOpcUaServerWPF
                     else
                     {
                         isConnected = false;
-                        //MessageBox.Show("Cannot start OPCUA-Server by some reasons.");
                     }
                 }
                 catch (Exception ex)
@@ -71,7 +77,7 @@ namespace conveyorOpcUaServerWPF
             {
                 try
                 {
-                    server.Stop();
+                    await Task.Run(() => server.Stop());
                     isConnected = false;
                     startServerBTN.Content = "Start Server";
                     tcpText.Text = "Server is downed";
@@ -85,6 +91,7 @@ namespace conveyorOpcUaServerWPF
         }
         private void copyBTN_Click(object sender, RoutedEventArgs e)
         {
+            server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.Torque.Value = 1212;
             Clipboard.SetDataObject(tcpText.Text);
         }
         
@@ -105,6 +112,8 @@ namespace conveyorOpcUaServerWPF
 
         #region Private field
         private SerialPort m_port = new SerialPort();
+        private modbusRtuMotor motor;
+        
 
         #endregion
 
@@ -139,12 +148,20 @@ namespace conveyorOpcUaServerWPF
                                       (bitStopComboBox.SelectedIndex == 1) ? StopBits.One :
                                       (bitStopComboBox.SelectedIndex == 2) ? StopBits.Two :
                                       StopBits.One;
-                    m_port.Open();
+
+                    if(motor == null)
+                    {
+                        motor = new modbusRtuMotor(200, m_port, 1);
+                        motor.motorMonitor += new modbusRtuMotor.motorMonitorEventHandler(monitor);
+                    }
+
+                    motor.start();
+
                     openBTN.Content = "Close Port";
                 }
                 else
                 {
-                    m_port.Close();
+                    motor.stop();
                     openBTN.Content = "Open Port";
                 }
             }

@@ -22,7 +22,12 @@ TargetNamespace="http://opcfoundation.org/TripleH"
     <opc:ObjectType SymbolicName="GenericMotorType" BaseType="ua:BaseObjectType">
 		<opc:Description>A generic motor.</opc:Description>
 		<opc:Children>
-			<opc:Variable SymbolicName="Speed" DataType="ua:Double" ValueRank="Scalar" TypeDefinition="ua:AnalogItemType" AccessLevel="ReadWrite" />
+			<opc:Variable SymbolicName="Direction" DataType="ua:Integer" ValueRank="Scalar" TypeDefinition="ua:AnalogItemType" AccessLevel="ReadWrite" />
+			<opc:Variable SymbolicName="setSpeed" DataType="ua:Integer" ValueRank="Scalar" TypeDefinition="ua:AnalogItemType" AccessLevel="ReadWrite" />
+			<opc:Variable SymbolicName="outputSpeed" DataType="ua:Integer" ValueRank="Scalar" TypeDefinition="ua:AnalogItemType" AccessLevel="ReadWrite" />
+			<opc:Variable SymbolicName="outputCurrent" DataType="ua:Integer" ValueRank="Scalar" TypeDefinition="ua:AnalogItemType" AccessLevel="ReadWrite" />
+			<opc:Variable SymbolicName="outputVoltage" DataType="ua:Integer" ValueRank="Scalar" TypeDefinition="ua:AnalogItemType" AccessLevel="ReadWrite" />
+			<opc:Variable SymbolicName="Torque" DataType="ua:Integer" ValueRank="Scalar" TypeDefinition="ua:AnalogItemType" AccessLevel="ReadWrite" />
 		</opc:Children>
 	</opc:ObjectType>
  
@@ -46,14 +51,24 @@ TargetNamespace="http://opcfoundation.org/TripleH"
 			<opc:Object SymbolicName="Motor1" TypeDefinition="ThreePharesMotor" SupportsEvents="true">
 				<opc:BrowseName>Motor01</opc:BrowseName>
 					<opc:Children>
-						<opc:Variable SymbolicName="Speed" />
+						<opc:Variable SymbolicName="Direction" />
+						<opc:Variable SymbolicName="setSpeed" />
+						<opc:Variable SymbolicName="outputSpeed" />
+						<opc:Variable SymbolicName="outputCurrent" />
+						<opc:Variable SymbolicName="outputVoltage" />
+						<opc:Variable SymbolicName="Torque" />
 					</opc:Children>
 			</opc:Object>			
 
 			<opc:Object SymbolicName="Motor2" TypeDefinition="ThreePharesMotor" SupportsEvents="true">
 				<opc:BrowseName>Motor02</opc:BrowseName>
 					<opc:Children>
-						<opc:Variable SymbolicName="Speed" />
+						<opc:Variable SymbolicName="Direction" />
+						<opc:Variable SymbolicName="setSpeed" />
+						<opc:Variable SymbolicName="outputSpeed" />
+						<opc:Variable SymbolicName="outputCurrent" />
+						<opc:Variable SymbolicName="outputVoltage" />
+						<opc:Variable SymbolicName="Torque" />
 					</opc:Children>
 			</opc:Object>			
 

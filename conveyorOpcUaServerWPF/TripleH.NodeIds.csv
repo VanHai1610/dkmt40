@@ -1,5 +1,5 @@
-ConveyorType,15,ObjectType
+ConveyorType,75,ObjectType
 GenericMotorType,1,ObjectType
-ThreePharesMotor,8,ObjectType
-TripleH1,48,Object
-TripleHType,30,ObjectType
+ThreePharesMotor,38,ObjectType
+TripleH1,228,Object
+TripleHType,150,ObjectType

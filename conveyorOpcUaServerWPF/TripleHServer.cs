@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TripleH;
 
 namespace ConveyorOpcUAServer
 {
-    class TripleHServer : StandardServer
+    public class TripleHServer : StandardServer
     {
+        public TripleHNodeManager nodeManager;
         protected override MasterNodeManager CreateMasterNodeManager(IServerInternal server, ApplicationConfiguration configuration)
         {
             Utils.Trace("Creating the Node Managers.");
@@ -17,7 +19,10 @@ namespace ConveyorOpcUAServer
             List<INodeManager> nodeManagers = new List<INodeManager>();
 
             // create the custom node managers.
-            nodeManagers.Add(new TripleHNodeManager(server, configuration));
+            nodeManager = new TripleHNodeManager(server, configuration);
+            nodeManagers.Add(nodeManager);
+
+
 
             // create master node manager.
             return new MasterNodeManager(server, configuration, null, nodeManagers.ToArray());
