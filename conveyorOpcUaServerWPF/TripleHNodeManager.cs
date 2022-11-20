@@ -135,8 +135,6 @@ namespace ConveyorOpcUAServer
 
         public void DoSimulation(object state)
         {
-            m_conveyor1.Conveyor.Motor1.setSpeed.Value = 100;
-            m_conveyor1.Conveyor.Motor1.setSpeed.Value = 200;
         }
 
         private ServiceResult OnStartProcess(ISystemContext context, MethodState method, IList<object> inputArguments,

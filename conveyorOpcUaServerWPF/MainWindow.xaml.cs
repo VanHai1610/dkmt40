@@ -33,7 +33,10 @@ namespace conveyorOpcUaServerWPF
         {
             InitializeComponent();
 
-
+            maxTB.Text = "2000";
+            minTB.Text = "0";
+            speedSlider.Maximum = 2000;
+            speedSlider.Minimum = 0;
         }
 
         #endregion
@@ -41,8 +44,16 @@ namespace conveyorOpcUaServerWPF
         #region Method
         private void monitor(ushort[] data)
         {
-            //m_conveyor.Conveyor.Motor1.Torque.Value = 122;
-            
+            if (isConnected)
+            {
+                server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.Direction.Value = data[0];
+                server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.setSpeed.Value = data[1];
+                server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.outputSpeed.Value = data[2];
+                server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.outputCurrent.Value = data[3];
+                server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.outputVoltage.Value = data[4];
+                server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.Torque.Value = data[5];
+
+            }
         }
 
         #endregion
@@ -56,10 +67,12 @@ namespace conveyorOpcUaServerWPF
                 try
                 {
                     bool result = await Task.Run(() => server.Start());
+                    setOnWriteValueEvent();
                     if (result)
                     {
                         isConnected = true;
                         startServerBTN.Content = "Stop Server";
+                        statusText.Text = "Walking";
                         tcpText.Text = server.Server.GetEndpoints()[0].EndpointUrl;
                     }
                     else
@@ -80,6 +93,7 @@ namespace conveyorOpcUaServerWPF
                     await Task.Run(() => server.Stop());
                     isConnected = false;
                     startServerBTN.Content = "Start Server";
+                    statusText.Text = "Not Walking";
                     tcpText.Text = "Server is downed";
 
                 }
@@ -91,10 +105,22 @@ namespace conveyorOpcUaServerWPF
         }
         private void copyBTN_Click(object sender, RoutedEventArgs e)
         {
-            server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.Torque.Value = 1212;
+
             Clipboard.SetDataObject(tcpText.Text);
         }
-        
+        private void setOnWriteValueEvent()
+        {
+            server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.setSpeed.OnWriteValue += testOnWrite;
+        }
+
+        private ServiceResult testOnWrite(ISystemContext context, NodeState node, NumericRange indexRange, QualifiedName dataEncoding, ref object value, ref StatusCode statusCode, ref DateTime timestamp)
+        {
+            bool isGood = motor.WriteMotor((int)value, modbusRtuMotor.motorProperty.setSpeed, 1);
+            return ServiceResult.Good;
+        }
+
+
+
         #endregion
 
         #region Public feild
@@ -102,7 +128,8 @@ namespace conveyorOpcUaServerWPF
         public OPCUAServer server = new OPCUAServer("Server.Config.xml");
         public bool isConnected = false;
 
-        public SerialPort port {
+        public SerialPort port
+        {
             get { return m_port; }
             set {; }
         }
@@ -113,7 +140,7 @@ namespace conveyorOpcUaServerWPF
         #region Private field
         private SerialPort m_port = new SerialPort();
         private modbusRtuMotor motor;
-        
+
 
         #endregion
 
@@ -129,45 +156,120 @@ namespace conveyorOpcUaServerWPF
 
         private void openBTN_Click(object sender, RoutedEventArgs e)
         {
+        }
+
+
+
+        private void decimalTextBoxPreview(object sender, TextCompositionEventArgs e)
+        {
+            bool approvedDecimalPoint = false;
+
+            if (e.Text == ".")
+            {
+                if (!((TextBox)sender).Text.Contains("."))
+                    approvedDecimalPoint = true;
+            }
+
+            if (!(char.IsDigit(e.Text, e.Text.Length - 1) || approvedDecimalPoint))
+                e.Handled = true;
+        }
+
+        private void minMaxChanged(object sender, TextChangedEventArgs e)
+        {
+            if (maxTB.Text.Length > 0 && minTB.Text.Length > 0)
+            {
+
+                if (Convert.ToInt16(maxTB.Text) <= Convert.ToInt16(minTB.Text))
+                {
+                    minTB.Text = maxTB.Text;
+                }
+                if(motor != null)
+                {
+                    speedSlider.Maximum = Convert.ToInt16(maxTB.Text);
+                    speedSlider.Minimum = Convert.ToInt16(minTB.Text);
+                }
+            }
+        }
+        private void startStopBTN(object sender, RoutedEventArgs e)
+        {
+            getPortInfo();
+            try
+            {
+                if (motor == null)
+                {
+                    motor = new modbusRtuMotor(500, m_port, 1);
+                    motor.motorMonitor += new modbusRtuMotor.motorMonitorEventHandler(monitor);
+                    onOffMotorBTN.Content = "Stop Motor";
+                }
+
+                else if (!m_port.IsOpen)
+                {
+                    motor.start();
+                    onOffMotorBTN.Content = "Stop Motor";
+                }
+                else
+                {
+                    motor.stop();
+                    onOffMotorBTN.Content = "Start Motor";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+        private void getPortInfo()
+        {
+
             try
             {
                 if (!m_port.IsOpen)
                 {
                     m_port.PortName = portComboBox.Text;
 
-                    m_port.BaudRate = Convert.ToInt32( baudComboBox.Text);
+                    m_port.BaudRate = Convert.ToInt32(baudComboBox.Text);
 
                     m_port.Parity = (parityComboBox.SelectedIndex == 0) ? Parity.None :
                                     (parityComboBox.SelectedIndex == 1) ? Parity.Even :
-                                    (parityComboBox.SelectedIndex == 2) ? Parity.Odd : 
+                                    (parityComboBox.SelectedIndex == 2) ? Parity.Odd :
                                     Parity.None;
 
-                    m_port.DataBits = Convert.ToInt16( bitsComboBox.Text);
+                    m_port.DataBits = Convert.ToInt16(bitsComboBox.Text);
 
                     m_port.StopBits = (bitStopComboBox.SelectedIndex == 0) ? StopBits.None :
                                       (bitStopComboBox.SelectedIndex == 1) ? StopBits.One :
                                       (bitStopComboBox.SelectedIndex == 2) ? StopBits.Two :
                                       StopBits.One;
 
-                    if(motor == null)
-                    {
-                        motor = new modbusRtuMotor(200, m_port, 1);
-                        motor.motorMonitor += new modbusRtuMotor.motorMonitorEventHandler(monitor);
-                    }
-
-                    motor.start();
-
-                    openBTN.Content = "Close Port";
-                }
-                else
-                {
-                    motor.stop();
-                    openBTN.Content = "Open Port";
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+
+        }
+
+        private void dragCompleted(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                motor.WriteMotor((int)speedSlider.Value, modbusRtuMotor.motorProperty.setSpeed, Convert.ToInt16(idTB.Text));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void directionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (m_port.IsOpen)
+            {
+                int value = (directionComboBox.SelectedIndex == 0) ? 2 : 4;
+                motor.WriteMotor(value, modbusRtuMotor.motorProperty.direction, Convert.ToInt16( idTB.Text));
             }
         }
     }

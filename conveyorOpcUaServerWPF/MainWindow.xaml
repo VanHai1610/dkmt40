@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:conveyorOpcUaServerWPF"
         mc:Ignorable="d"
         Title="Triple-H OPC-UA Server" Height="640" Width="1020" Background="#000000"
-        FontFamily="Poppins" 
+        FontFamily="Poppins"  
         >
 
     <Window.Resources>
@@ -822,12 +822,14 @@
 
                         <TextBox    Style="{DynamicResource simpleRoundedTextBox}"
                                     Grid.Row="4"
+                                    Name="idTB"
+                                    Text="1"
                                     Grid.Column="1"
                                     Width="200"
                                     Height="40"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Right"
-                                    Margin="0 0 20 0">
+                                    Margin="0 0 20 0" PreviewTextInput="decimalTextBoxPreview">
 
 
                         </TextBox>
@@ -848,19 +850,6 @@
                             </TextBlock.Foreground>
                         </TextBlock>
 
-                        <Slider Grid.Column="1"
-                                    Grid.Row="1"
-                                    Width="630"
-                                    Style="{DynamicResource Horizontal_Slider}" 
-                                    TickPlacement="TopLeft" 
-                                    AutoToolTipPlacement="BottomRight" 
-                                    Maximum="100"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Left"
-                                    Margin="10,0,0,0">
-
-                        </Slider>
-
                         <DockPanel Grid.Row="2"
                                    Grid.Column="2"
                                    Margin=" 0 0 20 0">
@@ -870,13 +859,15 @@
                                 <TextBlock Text="Min:"
                                            FontSize="25"
                                            VerticalAlignment="Center"
-                                           Padding="10 0 5 0"/>
+                                           Padding="10 0 5 0"
+                                           />
 
                                 <TextBox Style="{DynamicResource simpleRoundedTextBox}"
+                                         Name="minTB"
                                          Width="100"
                                          Height="40"
                                          VerticalAlignment="Center"
-                                         Padding="0 0 0 0">
+                                         Padding="0 0 0 0" PreviewTextInput="decimalTextBoxPreview" TextChanged="minMaxChanged" >
 
 
                                 </TextBox>
@@ -892,8 +883,10 @@
                                          Padding=" 0 0 10 0"
                                            />
                                 <TextBox Style="{DynamicResource simpleRoundedTextBox}"
+                                         Name="maxTB"
                                          Width="100" 
                                         Height="40"
+                                        PreviewTextInput="decimalTextBoxPreview" TextChanged="minMaxChanged"
                                          />
 
                             </DockPanel>
@@ -923,6 +916,7 @@
                                     Height="40"
                                     Margin=" 0 0 20 0"
                                     Background="Transparent"
+                                    SelectedIndex="0" SelectionChanged="directionComboBox_SelectionChanged"
                                     >
                             <ComboBoxItem Content="CW"/>
                             <ComboBoxItem Content="CCW"/>
@@ -942,7 +936,7 @@
 
                         </TextBlock>
 
-                        <TextBlock  Name="statusLB"
+                        <TextBlock  
                                     Grid.Row="5"
                                     Grid.Column="1"
                                     Text="Uknown"
@@ -960,7 +954,21 @@
                                 FontSize="20"
                                 Width="200"
                                 Height="50" 
+                                 Click="startStopBTN"
                                 />
+                        <Slider Grid.Column="1"
+                                x:Name="speedSlider"
+                                    Grid.Row="1"
+                                Style="{DynamicResource Horizontal_Slider}"
+                                    Width="630"
+                                    TickPlacement="TopLeft" 
+                                    AutoToolTipPlacement="BottomRight" 
+                                    Maximum="2"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Left"
+                                    Margin="10,0,0,0"  Thumb.DragCompleted="dragCompleted" SmallChange="1" LargeChange="100" >
+                            
+                        </Slider>
 
                     </Grid>
 

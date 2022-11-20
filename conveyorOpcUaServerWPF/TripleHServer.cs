@@ -24,6 +24,7 @@ namespace ConveyorOpcUAServer
 
 
 
+
             // create master node manager.
             return new MasterNodeManager(server, configuration, null, nodeManagers.ToArray());
         }

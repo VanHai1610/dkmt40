@@ -6,6 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Timers;
+using Modbus.Data;
+using System.Windows;
 
 namespace modbusMotor
 {
@@ -24,6 +26,7 @@ namespace modbusMotor
 
             timer = new System.Timers.Timer();
             timer.Interval = interval;
+                
             timer.Elapsed += checkValue;
             timer.Start();
             
@@ -32,19 +35,45 @@ namespace modbusMotor
 
         #endregion
 
+        #region Write value
+
+        public bool WriteMotor(int value, motorProperty property, int id)
+        {
+            bool result = false ;
+            driver.write(Convert.ToByte(id), motorAddress[((int)property)], (UInt16)value, ModbusDataType.HoldingRegister);
+            return result;
+        }
+
+        #endregion
+
         #region Method
+
+
+
+
+        #endregion
+
+        #region Value change event handler
+
+        public delegate void motorMonitorEventHandler(ushort[] data);
+
+        public motorMonitorEventHandler motorMonitor;
         private void checkValue(object? sender, ElapsedEventArgs e)
         {
+            timer.Stop();
             if (driver.port.IsOpen)
             {
                 getValue();
             }
+            timer.Start();
         }
 
-        public async void getValue()
-        {  
-            ushort[] datas = await driver.readMotor(1, Modbus.Data.ModbusDataType.HoldingRegister, motorAddress);
-            if(motorData != datas)
+        public void getValue()
+        {
+            //ushort[] datas = await driver.readMotor(1, Modbus.Data.ModbusDataType.HoldingRegister, motorAddress);
+
+            ushort[] datas = driver.readMotor(1, Modbus.Data.ModbusDataType.HoldingRegister, motorAddress);
+            if (motorData != datas)
             {
                 motorData = datas;
                 if(motorMonitor != null)
@@ -55,6 +84,10 @@ namespace modbusMotor
             }
         }
 
+
+        #endregion
+
+        #region Connection control
         public void stop()
         {
             driver.stop();
@@ -74,20 +107,20 @@ namespace modbusMotor
         private  modbusRtuDriver driver;
 
         // Setup callback
-        public delegate void motorMonitorEventHandler(ushort[] data);
-
-        public motorMonitorEventHandler motorMonitor;
 
         private int id;
 
         private static ushort directionAddress = 8;
-        private static ushort outputCurrentAddress = 202;
         private static ushort setSpeedAddress = 13;
+        private static ushort outputCurrentAddress = 202;
         private static ushort outputSpeedAddress = 201;
-        private static ushort outputVoltageAddress = 203;
+        private static ushort outputVoltageAddress = 214;
         private static ushort motorTorqueAddress = 207;
         
         private motorDirection direction = motorDirection.CW;
+
+        private static int maxSpeed;
+        private static int minSpeed;
 
         private static ushort setSpeed = 0;
         private static ushort outputSpeed = 0;
@@ -101,20 +134,23 @@ namespace modbusMotor
                                     outputSpeed,
                                     outputCurrent,
                                     outputVoltage,
-                                    motorTorque};
+                                    motorTorque };
         
-        private static ushort[] motorAddress = { 
+        private ushort[] motorAddress = { 
             directionAddress,
             setSpeedAddress ,
             outputSpeedAddress,
             outputCurrentAddress,
             outputVoltageAddress,
-            motorTorqueAddress};
+            motorTorqueAddress };
 
+        private ushort[] testAddress = { 7,8,9,10,11,333 };
 
         #endregion
 
         #region public fields
+
+        public bool isRunning;
 
         public enum motorDirection
         {
@@ -122,9 +158,68 @@ namespace modbusMotor
             CCW
         }
 
+        public enum motorProperty
+        {
+            direction = 0,
+            setSpeed = 1, 
+            outputSpeed = 2,
+            outputCurrent = 3,
+            outputVoltage = 4,
+            Torque = 5
+        }
+
         #endregion
 
         #region Assessor
+        public int maxMotorSpeed
+        {
+            get
+            {
+                return maxSpeed;
+            }
+            set
+            {
+                if(value > 3000)
+                {
+                    maxSpeed = 3000;
+                }
+                else
+                {
+                    maxSpeed = value;
+                }
+                if(maxSpeed < minSpeed)
+                {
+                    maxSpeed = minSpeed;
+                }
+
+            }
+        }
+        public int minMotorSpeed {
+            get
+            {
+                return minSpeed;
+            }
+            set
+            {
+                if(minSpeed < 0)
+                {
+                    minSpeed = 0;
+                }
+                else
+                {
+                    minSpeed = value;
+                }
+                if(minSpeed > maxSpeed)
+                {
+                    minSpeed = maxSpeed;
+                }
+               } 
+        }
+
+        public motorDirection Diretion 
+        {
+            get { return direction; }
+        }
 
         public int SetSpeed { get { return setSpeed; } }
         public int OutputSpeed { get { return outputSpeed; } }
