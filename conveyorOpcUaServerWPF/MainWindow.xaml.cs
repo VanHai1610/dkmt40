@@ -37,6 +37,7 @@ namespace conveyorOpcUaServerWPF
             minTB.Text = "0";
             speedSlider.Maximum = 2000;
             speedSlider.Minimum = 0;
+
         }
 
         #endregion
@@ -46,14 +47,46 @@ namespace conveyorOpcUaServerWPF
         {
             if (isConnected)
             {
-                server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.Direction.Value = data[0];
-                server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.setSpeed.Value = data[1];
-                server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.outputSpeed.Value = data[2];
-                server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.outputCurrent.Value = data[3];
-                server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.outputVoltage.Value = data[4];
-                server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.Torque.Value = data[5];
+                server.tripleHServer.nodeManager.m_conveyor1.Conveyor.Motor1.Direction.Value = data[0];
+                server.tripleHServer.nodeManager.m_conveyor1.Conveyor.Motor1.setSpeed.Value = data[1];
+                server.tripleHServer.nodeManager.m_conveyor1.Conveyor.Motor1.outputSpeed.Value = data[2];
+                server.tripleHServer.nodeManager.m_conveyor1.Conveyor.Motor1.outputCurrent.Value = data[3];
+                server.tripleHServer.nodeManager.m_conveyor1.Conveyor.Motor1.outputVoltage.Value = data[4];
+                server.tripleHServer.nodeManager.m_conveyor1.Conveyor.Motor1.Torque.Value = data[5];
 
             }
+        }
+
+        private void getPortInfo()
+        {
+
+            try
+            {
+                if (!m_port.IsOpen)
+                {
+                    m_port.PortName = portComboBox.Text;
+
+                    m_port.BaudRate = Convert.ToInt32(baudComboBox.Text);
+
+                    m_port.Parity = (parityComboBox.SelectedIndex == 0) ? Parity.None :
+                                    (parityComboBox.SelectedIndex == 1) ? Parity.Even :
+                                    (parityComboBox.SelectedIndex == 2) ? Parity.Odd :
+                                    Parity.None;
+
+                    m_port.DataBits = Convert.ToInt16(bitsComboBox.Text);
+
+                    m_port.StopBits = (bitStopComboBox.SelectedIndex == 0) ? StopBits.None :
+                                      (bitStopComboBox.SelectedIndex == 1) ? StopBits.One :
+                                      (bitStopComboBox.SelectedIndex == 2) ? StopBits.Two :
+                                      StopBits.One;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         #endregion
@@ -103,46 +136,23 @@ namespace conveyorOpcUaServerWPF
                 }
             }
         }
+        
         private void copyBTN_Click(object sender, RoutedEventArgs e)
         {
 
             Clipboard.SetDataObject(tcpText.Text);
         }
+        
         private void setOnWriteValueEvent()
         {
-            server.server1.nodeManager.m_conveyor1.Conveyor.Motor1.setSpeed.OnWriteValue += testOnWrite;
+            server.tripleHServer.nodeManager.m_conveyor1.Conveyor.Motor1.setSpeed.OnWriteValue += OnWrite;
         }
 
-        private ServiceResult testOnWrite(ISystemContext context, NodeState node, NumericRange indexRange, QualifiedName dataEncoding, ref object value, ref StatusCode statusCode, ref DateTime timestamp)
+        private ServiceResult OnWrite(ISystemContext context, NodeState node, NumericRange indexRange, QualifiedName dataEncoding, ref object value, ref StatusCode statusCode, ref DateTime timestamp)
         {
             bool isGood = motor.WriteMotor((int)value, modbusRtuMotor.motorProperty.setSpeed, 1);
             return ServiceResult.Good;
         }
-
-
-
-        #endregion
-
-        #region Public feild
-
-        public OPCUAServer server = new OPCUAServer("Server.Config.xml");
-        public bool isConnected = false;
-
-        public SerialPort port
-        {
-            get { return m_port; }
-            set {; }
-        }
-
-
-        #endregion
-
-        #region Private field
-        private SerialPort m_port = new SerialPort();
-        private modbusRtuMotor motor;
-
-
-        #endregion
 
         private void portComboBox_DropDownOpened(object sender, EventArgs e)
         {
@@ -153,12 +163,6 @@ namespace conveyorOpcUaServerWPF
                 portComboBox.Items.Add(comPort);
             }
         }
-
-        private void openBTN_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-
 
         private void decimalTextBoxPreview(object sender, TextCompositionEventArgs e)
         {
@@ -190,6 +194,7 @@ namespace conveyorOpcUaServerWPF
                 }
             }
         }
+ 
         private void startStopBTN(object sender, RoutedEventArgs e)
         {
             getPortInfo();
@@ -200,16 +205,19 @@ namespace conveyorOpcUaServerWPF
                     motor = new modbusRtuMotor(500, m_port, 1);
                     motor.motorMonitor += new modbusRtuMotor.motorMonitorEventHandler(monitor);
                     onOffMotorBTN.Content = "Stop Motor";
+                    statusMotorLB.Text = "Walking";
                 }
 
                 else if (!m_port.IsOpen)
                 {
-                    motor.start();
+                    motor.startMotor();
                     onOffMotorBTN.Content = "Stop Motor";
+                    statusMotorLB.Text = "Walking";
                 }
                 else
                 {
-                    motor.stop();
+                    motor.stopMotor();
+                    statusMotorLB.Text = "Not walking anymore";
                     onOffMotorBTN.Content = "Start Motor";
                 }
 
@@ -220,38 +228,7 @@ namespace conveyorOpcUaServerWPF
             }
 
         }
-        private void getPortInfo()
-        {
-
-            try
-            {
-                if (!m_port.IsOpen)
-                {
-                    m_port.PortName = portComboBox.Text;
-
-                    m_port.BaudRate = Convert.ToInt32(baudComboBox.Text);
-
-                    m_port.Parity = (parityComboBox.SelectedIndex == 0) ? Parity.None :
-                                    (parityComboBox.SelectedIndex == 1) ? Parity.Even :
-                                    (parityComboBox.SelectedIndex == 2) ? Parity.Odd :
-                                    Parity.None;
-
-                    m_port.DataBits = Convert.ToInt16(bitsComboBox.Text);
-
-                    m_port.StopBits = (bitStopComboBox.SelectedIndex == 0) ? StopBits.None :
-                                      (bitStopComboBox.SelectedIndex == 1) ? StopBits.One :
-                                      (bitStopComboBox.SelectedIndex == 2) ? StopBits.Two :
-                                      StopBits.One;
-
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-        }
-
+     
         private void dragCompleted(object sender, RoutedEventArgs e)
         {
             try
@@ -268,9 +245,34 @@ namespace conveyorOpcUaServerWPF
         {
             if (m_port.IsOpen)
             {
-                int value = (directionComboBox.SelectedIndex == 0) ? 2 : 4;
+                int value = (directionComboBox.SelectedIndex == 0) ? 4 : 2;
                 motor.WriteMotor(value, modbusRtuMotor.motorProperty.direction, Convert.ToInt16( idTB.Text));
             }
         }
+
+
+        #endregion
+
+        #region Public feild
+
+        public OPCUAServer server = new OPCUAServer("Server.Config.xml");
+        public bool isConnected = false;
+
+        public SerialPort port
+        {
+            get { return m_port; }
+            set {; }
+        }
+
+
+        #endregion
+
+        #region Private field
+        private SerialPort m_port = new SerialPort();
+        private modbusRtuMotor motor;
+
+
+        #endregion
+
     }
 }

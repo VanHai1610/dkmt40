@@ -66,22 +66,6 @@ namespace modbusMotor
                 writeMotor();
         }
 
-
-        private void doStop()
-        {
-            try
-            {
-                port.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        private byte id = 1;
-        private ushort address = 0;
-        private ushort value = 0;
-        private ModbusDataType type = ModbusDataType.HoldingRegister;
         public void writeMotor()
         {
             try
@@ -172,12 +156,18 @@ namespace modbusMotor
         private bool wantToStop = false;
         private bool wantToWrite = false;
 
+        private byte id = 1;
+        private ushort address = 0;
+        private ushort value = 0;
+        private ModbusDataType type = ModbusDataType.HoldingRegister;
+
+
         #endregion
 
         #region Public fields
         //public SerialPort Port { get { return port; } }
         public bool isReading = false;
-        public IModbusSerialMaster Master {  get { return master; } }
+
         public SerialPort port = new SerialPort();
 
         #endregion

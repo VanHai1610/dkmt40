@@ -22,9 +22,6 @@ namespace ConveyorOpcUAServer
             nodeManager = new TripleHNodeManager(server, configuration);
             nodeManagers.Add(nodeManager);
 
-
-
-
             // create master node manager.
             return new MasterNodeManager(server, configuration, null, nodeManagers.ToArray());
         }

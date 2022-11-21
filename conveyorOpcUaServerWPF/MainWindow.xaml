@@ -759,15 +759,7 @@
 
                         </DockPanel>
 
-                        <DockPanel Grid.Row="6">
-                            <Button Name="openBTN"
-                                    Style="{DynamicResource StandardButton}"
-                                    Content="Open Port"
-                                    FontSize="20"
-                                    Width="150"
-                                    Height="50" Click="openBTN_Click"
-                                    />
-                        </DockPanel>
+                        <DockPanel Grid.Row="6"/>
 
                     </Grid>
 
@@ -936,7 +928,7 @@
 
                         </TextBlock>
 
-                        <TextBlock  
+                        <TextBlock  Name="statusMotorLB"
                                     Grid.Row="5"
                                     Grid.Column="1"
                                     Text="Uknown"

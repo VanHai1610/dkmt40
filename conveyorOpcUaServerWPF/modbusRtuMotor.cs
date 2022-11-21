@@ -35,7 +35,7 @@ namespace modbusMotor
 
         #endregion
 
-        #region Write value
+        #region Write data
 
         public bool WriteMotor(int value, motorProperty property, int id)
         {
@@ -46,8 +46,22 @@ namespace modbusMotor
 
         #endregion
 
-        #region Method
+        #region Read data
+        public void getValue()
+        {
+            //ushort[] datas = await driver.readMotor(1, Modbus.Data.ModbusDataType.HoldingRegister, motorAddress);
 
+            ushort[] datas = driver.readMotor(1, Modbus.Data.ModbusDataType.HoldingRegister, motorAddress);
+            if (motorData != datas)
+            {
+                motorData = datas;
+                if(motorMonitor != null)
+                {
+                    motorMonitor.Invoke(motorData);
+                }
+                direction = (motorData[0] == 75 || motorData[0] == 11) ? motorDirection.CW : motorDirection.CCW;
+            }
+        }
 
 
 
@@ -68,31 +82,15 @@ namespace modbusMotor
             timer.Start();
         }
 
-        public void getValue()
-        {
-            //ushort[] datas = await driver.readMotor(1, Modbus.Data.ModbusDataType.HoldingRegister, motorAddress);
-
-            ushort[] datas = driver.readMotor(1, Modbus.Data.ModbusDataType.HoldingRegister, motorAddress);
-            if (motorData != datas)
-            {
-                motorData = datas;
-                if(motorMonitor != null)
-                {
-                    motorMonitor.Invoke(motorData);
-                }
-                direction = (motorData[0] == 75 || motorData[0] == 11) ? motorDirection.CW : motorDirection.CCW;
-            }
-        }
-
 
         #endregion
 
         #region Connection control
-        public void stop()
+        public void stopMotor()
         {
             driver.stop();
         }
-        public void start()
+        public void startMotor()
         {
             driver.start();
         }
@@ -106,8 +104,6 @@ namespace modbusMotor
         // Setup modbus driver
         private  modbusRtuDriver driver;
 
-        // Setup callback
-
         private int id;
 
         private static ushort directionAddress = 8;
@@ -118,9 +114,6 @@ namespace modbusMotor
         private static ushort motorTorqueAddress = 207;
         
         private motorDirection direction = motorDirection.CW;
-
-        private static int maxSpeed;
-        private static int minSpeed;
 
         private static ushort setSpeed = 0;
         private static ushort outputSpeed = 0;
@@ -167,66 +160,6 @@ namespace modbusMotor
             outputVoltage = 4,
             Torque = 5
         }
-
-        #endregion
-
-        #region Assessor
-        public int maxMotorSpeed
-        {
-            get
-            {
-                return maxSpeed;
-            }
-            set
-            {
-                if(value > 3000)
-                {
-                    maxSpeed = 3000;
-                }
-                else
-                {
-                    maxSpeed = value;
-                }
-                if(maxSpeed < minSpeed)
-                {
-                    maxSpeed = minSpeed;
-                }
-
-            }
-        }
-        public int minMotorSpeed {
-            get
-            {
-                return minSpeed;
-            }
-            set
-            {
-                if(minSpeed < 0)
-                {
-                    minSpeed = 0;
-                }
-                else
-                {
-                    minSpeed = value;
-                }
-                if(minSpeed > maxSpeed)
-                {
-                    minSpeed = maxSpeed;
-                }
-               } 
-        }
-
-        public motorDirection Diretion 
-        {
-            get { return direction; }
-        }
-
-        public int SetSpeed { get { return setSpeed; } }
-        public int OutputSpeed { get { return outputSpeed; } }
-        public motorDirection Direction { get { return direction; } }
-        public int OutputVoltage { get { return outputVoltage; } }
-        public int OutputCurrent { get { return outputCurrent; } }
-        public int Torque { get { return motorTorque; } }
 
         #endregion
 

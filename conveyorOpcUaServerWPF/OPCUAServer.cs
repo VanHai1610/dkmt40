@@ -26,7 +26,7 @@ namespace conveyorOpcUaServerWPF
 
         #region Server connection
 
-        public TripleHServer server1 = new TripleHServer();
+        public TripleHServer tripleHServer = new TripleHServer();
         public bool Start()
         {
             try
@@ -45,7 +45,7 @@ namespace conveyorOpcUaServerWPF
                 m_application.CheckApplicationInstanceCertificate(false, 0).Wait();
 
                 // start the server.
-                m_application.Start(server1).Wait();
+                m_application.Start(tripleHServer).Wait();
 
                 // run the application interactively.
                 m_server = (StandardServer)m_application.Server;
