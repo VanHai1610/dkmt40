@@ -23,4 +23,4 @@ Thu thập dữ liệu từ biến tần thông qua Modbus-RTU, dùng OPC-UA đ�
 - Prosys Opc Ua Browser
 - Prosys OPC UA Simulation Server
 - UA-ModelCompiler
-- Modus poll, Modbus slave
+- Modus poll, Modbus slave.
